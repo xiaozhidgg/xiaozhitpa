@@ -2,7 +2,7 @@ package com.xiaozhi.tpa.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.xiaozhi.tpa.data.PlayerData;
-import net.minecraft.command.argument.StringArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;

@@ -6,7 +6,7 @@ import com.xiaozhi.tpa.data.PlayerData;
 import com.xiaozhi.tpa.util.HomePos;
 import com.xiaozhi.tpa.util.SaveBackPosition;
 import net.minecraft.command.CommandSource;
-import net.minecraft.command.argument.StringArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.command.ServerCommandSource;
