@@ -204,7 +204,7 @@ gradlew.bat build       rem 产物在 build/libs/
 - **你（跑一条命令）**：双击运行根目录 [`push.bat`](push.bat)，它会读取 `remote.txt` 里的仓库地址并 `git push`。这一步需要在**你联网 + 已认证**的机器上。
 
 ### 仓库地址 / 认证（关键信息，发布前需你来填）
-- **仓库地址**：写入根目录 `remote.txt`（已 gitignore，不入库），如 `https://github.com/<你的用户名>/xiaozhi-tpa.git`。
+- **仓库地址**：写入根目录 `remote.txt`（已 gitignore，不入库）。本项目为 `https://github.com/xiaozhidgg/xiaozhitpa.git`。
 - **认证方式（二选一）**：
   - HTTPS + Personal Access Token（推荐）：GitHub 会弹窗让你登录/输 Token；或先在 Git 里配置 credential manager。
   - SSH：配好 SSH 密钥，`remote` 用 `git@github.com:<你的用户名>/xiaozhi-tpa.git`。

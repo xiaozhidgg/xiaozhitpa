@@ -32,9 +32,19 @@ git commit -m "update: Xiaozhi TPA build & docs" >nul 2>nul || echo [信息] 没
 echo [信息] 正在推送到 GitHub（需本机联网 + 已认证）...
 git push -u origin main
 if errorlevel 1 (
-    echo [错误] 推送失败。请检查：已登录 GitHub(令牌/SSH)、仓库地址、网络。
-    pause
-    exit /b 1
+    echo [信息] 首次推送被拒（远端可能已存在提交）。尝试 rebase 合并后再推...
+    git pull --rebase origin main
+    if errorlevel 1 (
+        echo [错误] rebase 失败。请手动处理冲突，或确认远端仓库已清空。
+        pause
+        exit /b 1
+    )
+    git push -u origin main
+    if errorlevel 1 (
+        echo [错误] 仍推送失败。请检查：登录/令牌、仓库地址、网络、远端是否有无关提交。
+        pause
+        exit /b 1
+    )
 )
 
 echo.
