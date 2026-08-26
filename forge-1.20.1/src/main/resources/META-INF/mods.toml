@@ -1,0 +1,27 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "MIT"
+
+[[mods]]
+modId = "xiaozhi_tpa"
+version = "1.0.0-forge"
+displayName = "Xiaozhi TPA"
+description = "A server-side TPA / home / back mod for Forge 1.20.1. Ported from the Forge 1.20.1 'xsytpa' mod."
+authors = "xiaozhi"
+
+# Server-only mod: clients need not install it, and version mismatch is ignored.
+displayTest = "IGNORE_SERVER_VERSION"
+
+[[dependencies.xiaozhi_tpa]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.xiaozhi_tpa]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,1.21)"
+ordering = "NONE"
+side = "BOTH"

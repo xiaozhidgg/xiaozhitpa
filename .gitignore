@@ -1,0 +1,17 @@
+# --- Gradle / 构建产物 ---
+**/build/
+**/.gradle/
+**/run/
+**/.minecraft/
+**/.idea/
+**/.vscode/
+*.iml
+
+# --- 生成/二进制，避免入库 ---
+*.jar
+gradle/wrapper/gradle-wrapper.jar
+
+# --- 系统 / 临时 ---
+.DS_Store
+Thumbs.db
+*.log

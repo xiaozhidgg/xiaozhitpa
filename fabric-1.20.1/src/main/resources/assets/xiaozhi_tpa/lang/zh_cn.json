@@ -1,0 +1,40 @@
+{
+  "command.tpa.self": "§c不能向自己发送传送请求！",
+  "command.tpa.sent": "§a已向 %s 发送传送请求。",
+  "command.tpa.received": "§b%s 请求传送到你这里。\n§a输入 §f/tpaccept §a接受，§c/tpdeny §c拒绝。",
+  "command.tpa.request_exists": "§c你已经有一个待处理的 TPA 请求。",
+  "command.tpa.target_has_request": "§c%s 已有其他人发来的待处理 TPA 请求。",
+  "command.tpa.auto_accepted": "§a已自动传送到 %s。",
+  "command.tpa.auto_accepted_by": "§a%s 已自动传送到你这里。",
+
+  "command.tpaccept.no_request": "§c没有待处理的传送请求！",
+  "command.tpaccept.sender_offline": "§c请求者已离线，请求已取消。",
+  "command.tpaccept.accepted_to": "§a已传送到 %s！",
+  "command.tpaccept.accepted_from": "§a%s 已接受你的请求并传送到你这里。",
+  "command.tpaccept.not_from_player": "§c你没有收到来自 %s 的传送请求。",
+
+  "command.tpdeny.no_request": "§c没有待处理的传送请求！",
+  "command.tpdeny.denied": "§c%s 拒绝了你的传送请求。",
+  "command.tpdeny.denied_success": "§a已拒绝传送请求。",
+  "command.tpdeny.not_from_player": "§c你没有收到来自 %s 的传送请求。",
+
+  "command.tpauto.enabled": "§a已开启自动接受传送请求。",
+  "command.tpauto.disabled": "§c已关闭自动接受传送请求。",
+
+  "command.sethome.success": "§a家点 '%s' 设置成功！",
+
+  "command.home.not_found": "§c未找到名为 '%s' 的家点！",
+  "command.home.teleported": "§a已传送至家点 '%s'！",
+  "command.home.no_default": "§c你还没有设置默认家。请先使用 /sethome。",
+  "command.home.invalid_dimension": "§c家所在的维度不可用！",
+
+  "command.delhome.success": "§a家点 '%s' 已删除！",
+  "command.delhome.not_found": "§c家点 '%s' 不存在！",
+
+  "command.listhome.empty": "§c你没有任何家点！",
+  "command.listhome.header": "§a你在当前维度设置的家：",
+  "command.listhome.none": "§c你在当前维度没有设置任何家。",
+
+  "command.back.no_position": "§c没有可返回的位置！",
+  "command.back.teleported": "§a已返回上一个位置！"
+}

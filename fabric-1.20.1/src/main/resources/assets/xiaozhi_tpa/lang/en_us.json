@@ -1,0 +1,40 @@
+{
+  "command.tpa.self": "§cYou cannot send a teleport request to yourself!",
+  "command.tpa.sent": "§aTeleport request has been sent to %s.",
+  "command.tpa.received": "§b%s wants to teleport to you.\n§aType §f/tpaccept §ato accept or §c/tpdeny §cto decline.",
+  "command.tpa.request_exists": "§cYou already have a pending TPA request.",
+  "command.tpa.target_has_request": "§c%s already has a pending TPA request from someone else.",
+  "command.tpa.auto_accepted": "§aAutomatically teleported to %s.",
+  "command.tpa.auto_accepted_by": "§a%s has been automatically teleported to you.",
+
+  "command.tpaccept.no_request": "§cThere is no pending teleport request!",
+  "command.tpaccept.sender_offline": "§cThe requester is offline; request canceled.",
+  "command.tpaccept.accepted_to": "§aTeleported to %s!",
+  "command.tpaccept.accepted_from": "§a%s accepted your request and teleported to you.",
+  "command.tpaccept.not_from_player": "§cYou don't have a TPA request from %s.",
+
+  "command.tpdeny.no_request": "§cThere is no pending teleport request!",
+  "command.tpdeny.denied": "§c%s declined your teleport request.",
+  "command.tpdeny.denied_success": "§aTeleport request declined.",
+  "command.tpdeny.not_from_player": "§cYou don't have a TPA request from %s.",
+
+  "command.tpauto.enabled": "§aAuto-accept TPA requests enabled.",
+  "command.tpauto.disabled": "§cAuto-accept TPA requests disabled.",
+
+  "command.sethome.success": "§aHome point '%s' set successfully!",
+
+  "command.home.not_found": "§cNo home point named '%s' found!",
+  "command.home.teleported": "§aTeleported to home point '%s'!",
+  "command.home.no_default": "§cYou don't have a default home set. Use /sethome first.",
+  "command.home.invalid_dimension": "§cThe home's dimension is not available!",
+
+  "command.delhome.success": "§aHome point '%s' deleted!",
+  "command.delhome.not_found": "§cHome point '%s' does not exist!",
+
+  "command.listhome.empty": "§cYou don't have any home points!",
+  "command.listhome.header": "§aYour homes in this dimension:",
+  "command.listhome.none": "§cYou have no homes set in this dimension.",
+
+  "command.back.no_position": "§cNo previous position to return to!",
+  "command.back.teleported": "§aReturned to previous position!"
+}
