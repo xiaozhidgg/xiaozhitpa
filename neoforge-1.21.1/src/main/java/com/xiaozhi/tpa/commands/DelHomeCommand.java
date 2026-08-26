@@ -17,7 +17,7 @@ public class DelHomeCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(literal("delhome")
                 .then(argument("name", StringArgumentType.string())
-                        .executes(ctx -> execute(ctx.getSource(), StringArgumentType.getString(ctx, "name")))));
+                        .executes(ctx -> execute(ctx.getSource(), ctx.getArgument("name", String.class)))));
     }
 
     private static int execute(CommandSourceStack source, String name) throws CommandSyntaxException {

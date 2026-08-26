@@ -21,7 +21,7 @@ public final class SetHomeCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(literal("sethome")
                 .then(argument("name", StringArgumentType.string())
-                        .executes(ctx -> execute(ctx.getSource(), StringArgumentType.getString(ctx, "name")))));
+                        .executes(ctx -> execute(ctx.getSource(), ctx.getArgument("name", String.class)))));
     }
 
     private static int execute(ServerCommandSource source, String name) {

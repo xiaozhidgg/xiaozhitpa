@@ -43,7 +43,7 @@ public final class HomeCommand {
                 .executes(ctx -> teleport(ctx.getSource(), DEFAULT_NAME))
                 .then(argument("name", StringArgumentType.string())
                         .suggests(HOME_SUGGESTIONS)
-                        .executes(ctx -> teleport(ctx.getSource(), StringArgumentType.getString(ctx, "name")))));
+                        .executes(ctx -> teleport(ctx.getSource(), ctx.getArgument("name", String.class)))));
     }
 
     private static int teleport(ServerCommandSource source, String name) {
