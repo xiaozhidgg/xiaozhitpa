@@ -22,7 +22,7 @@ public class DelHomeCommand {
 
     private static int execute(CommandSourceStack source, String name) throws CommandSyntaxException {
         ServerPlayer self = source.getPlayerOrException();
-        ServerLevel level = (ServerLevel) self.getLevel();
+        ServerLevel level = self.serverLevel();
         var dim = level.dimension().location();
         PlayerData data = PlayerData.get(level);
         if (data.getHome(self.getUUID(), dim, name) == null) {

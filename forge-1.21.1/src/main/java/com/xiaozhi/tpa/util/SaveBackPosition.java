@@ -9,7 +9,7 @@ public final class SaveBackPosition {
     private SaveBackPosition() {}
 
     public static void save(ServerPlayer player) {
-        var level = (ServerLevel) player.getLevel();
+        var level = player.serverLevel();
         HomePos pos = new HomePos(player.getX(), player.getY(), player.getZ(),
                 player.getYRot(), player.getXRot(), level.dimension().location());
         PlayerData.get(level).setBackPosition(player.getUUID(), pos);

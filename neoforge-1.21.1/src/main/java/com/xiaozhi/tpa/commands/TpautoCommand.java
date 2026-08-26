@@ -22,7 +22,7 @@ public class TpautoCommand {
 
     private static int toggle(CommandSourceStack source) throws CommandSyntaxException {
         ServerPlayer self = source.getPlayerOrException();
-        PlayerData data = PlayerData.get((ServerLevel) self.getLevel());
+        PlayerData data = PlayerData.get(self.serverLevel());
         boolean isAuto = data.isAutoAcceptTpa(self.getUUID());
         data.setAutoAcceptTpa(self.getUUID(), !isAuto);
         self.sendSystemMessage(Component.translatable(!isAuto ? "command.tpauto.enabled" : "command.tpauto.disabled"));

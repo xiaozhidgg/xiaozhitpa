@@ -21,7 +21,7 @@ public class ListHomeCommand {
 
     private static int execute(CommandSourceStack source) throws CommandSyntaxException {
         ServerPlayer self = source.getPlayerOrException();
-        ServerLevel level = (ServerLevel) self.getLevel();
+        ServerLevel level = self.serverLevel();
         var dim = level.dimension().location();
         Map<String, HomePos> homes = PlayerData.get(level).getHomes(self.getUUID(), dim);
         if (homes.isEmpty()) {

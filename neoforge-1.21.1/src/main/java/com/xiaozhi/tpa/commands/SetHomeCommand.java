@@ -23,7 +23,7 @@ public class SetHomeCommand {
 
     private static int execute(CommandSourceStack source, String name) throws CommandSyntaxException {
         ServerPlayer self = source.getPlayerOrException();
-        ServerLevel level = (ServerLevel) self.getLevel();
+        ServerLevel level = self.serverLevel();
         HomePos pos = new HomePos(self.getX(), self.getY(), self.getZ(),
                 self.getYRot(), self.getXRot(), level.dimension().location());
         PlayerData.get(level).setHome(self.getUUID(), level.dimension().location(), name, pos);

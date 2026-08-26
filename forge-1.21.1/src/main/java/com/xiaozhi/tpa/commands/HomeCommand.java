@@ -28,7 +28,7 @@ public class HomeCommand {
 
     private static final SuggestionProvider<CommandSourceStack> HOME_SUGGESTIONS = (context, builder) -> {
         ServerPlayer self = context.getSource().getPlayerOrException();
-        ServerLevel level = (ServerLevel) self.getLevel();
+        ServerLevel level = self.serverLevel();
         ResourceLocation dim = level.dimension().location();
         Collection<String> names = PlayerData.get(level).getHomeNames(self.getUUID(), dim);
         return SharedSuggestionProvider.suggest(names, builder);
@@ -44,7 +44,7 @@ public class HomeCommand {
 
     private static int teleport(CommandSourceStack source, String name) throws CommandSyntaxException {
         ServerPlayer self = source.getPlayerOrException();
-        ServerLevel level = (ServerLevel) self.getLevel();
+        ServerLevel level = self.serverLevel();
         ResourceLocation dim = level.dimension().location();
 
         HomePos home = PlayerData.get(level).getHome(self.getUUID(), dim, name);

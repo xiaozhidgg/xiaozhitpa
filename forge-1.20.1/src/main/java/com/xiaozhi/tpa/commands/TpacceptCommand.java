@@ -46,7 +46,7 @@ public class TpacceptCommand {
         }
 
         SaveBackPosition.save(sender);
-        sender.teleportTo((ServerLevel) self.getLevel(), self.getX(), self.getY(), self.getZ(),
+        sender.teleportTo(self.serverLevel(), self.getX(), self.getY(), self.getZ(),
                 self.getYRot(), self.getXRot());
         sender.sendSystemMessage(Component.translatable("command.tpaccept.accepted_to", self.getDisplayName()));
         self.sendSystemMessage(Component.translatable("command.tpaccept.accepted_from", sender.getDisplayName()));

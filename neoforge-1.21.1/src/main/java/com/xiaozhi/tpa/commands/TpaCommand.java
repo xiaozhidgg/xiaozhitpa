@@ -36,9 +36,9 @@ public class TpaCommand {
         }
 
         // If the target has auto-accept enabled, teleport immediately.
-        if (PlayerData.get((ServerLevel) self.getLevel()).isAutoAcceptTpa(target.getUUID())) {
+        if (PlayerData.get(self.serverLevel()).isAutoAcceptTpa(target.getUUID())) {
             SaveBackPosition.save(self);
-            self.teleportTo((ServerLevel) target.getLevel(), target.getX(), target.getY(), target.getZ(),
+            self.teleportTo(target.serverLevel(), target.getX(), target.getY(), target.getZ(),
                     target.getYRot(), target.getXRot());
             self.sendSystemMessage(Component.translatable("command.tpa.auto_accepted", target.getDisplayName()));
             target.sendSystemMessage(Component.translatable("command.tpa.auto_accepted_by", self.getDisplayName()));

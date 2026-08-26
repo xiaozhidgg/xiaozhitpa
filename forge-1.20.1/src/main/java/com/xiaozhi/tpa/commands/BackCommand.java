@@ -22,7 +22,7 @@ public class BackCommand {
 
     private static int execute(CommandSourceStack source) throws CommandSyntaxException {
         ServerPlayer self = source.getPlayerOrException();
-        HomePos back = PlayerData.get((ServerLevel) self.getLevel()).getBackPosition(self.getUUID());
+        HomePos back = PlayerData.get(self.serverLevel()).getBackPosition(self.getUUID());
         if (back == null) {
             source.sendFailure(Component.translatable("command.back.no_position"));
             return 0;
