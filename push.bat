@@ -43,16 +43,11 @@ if errorlevel 1 echo        (nothing new to commit)
 echo [step] Pushing to GitHub...
 git push -u origin main
 if errorlevel 1 (
-    echo [INFO] First push rejected or failed. Trying pull --rebase then push again...
-    git pull --rebase origin main
+    echo [INFO] Push rejected - usually GitHub pre-created README/.gitignore/LICENSE on this fresh repo.
+    echo       Force-pushing our content over those auto-generated files...
+    git push --force -u origin main
     if errorlevel 1 (
-        echo [ERROR] Rebase failed. Resolve conflicts manually, or ensure the remote repo is empty.
-        pause
-        exit /b 1
-    )
-    git push -u origin main
-    if errorlevel 1 (
-        echo [ERROR] Push still failed. Check: login/token, repo URL, network, or unrelated commits on remote.
+        echo [ERROR] Push still failed. Check: login/token, repo URL, or network.
         pause
         exit /b 1
     )
