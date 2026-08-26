@@ -192,3 +192,37 @@ gradlew.bat build       rem 产物在 build/libs/
 ## 10. 许可
 
 采用 **MIT License**（见根目录 [`LICENSE`](LICENSE)），各工程 `mods.toml`/`fabric.mod.json` 的 `license` 字段均已设置为 `MIT`。如需更换为其他协议（如 LGPL-3.0），请同步修改 `LICENSE` 文件与 5 个工程的 `license` 字段。
+
+---
+
+## 11. 发布 / 上传与协作（CI 工作流）
+
+> 目标：仓库推送到 GitHub 后，**GitHub Actions 云端自动编译出 5 个 jar**，你没网也能拿到产物。
+
+### 分工
+- **我（在本地沙箱）**：只负责**改代码 + 提交本地 git 仓库**（`git add -A && git commit`）。⚠️ 注意：本沙箱 shell **无外网**（连 GitHub 都 `000`），所以我**不能执行 `git push`**。
+- **你（跑一条命令）**：双击运行根目录 [`push.bat`](push.bat)，它会读取 `remote.txt` 里的仓库地址并 `git push`。这一步需要在**你联网 + 已认证**的机器上。
+
+### 仓库地址 / 认证（关键信息，发布前需你来填）
+- **仓库地址**：写入根目录 `remote.txt`（已 gitignore，不入库），如 `https://github.com/<你的用户名>/xiaozhi-tpa.git`。
+- **认证方式（二选一）**：
+  - HTTPS + Personal Access Token（推荐）：GitHub 会弹窗让你登录/输 Token；或先在 Git 里配置 credential manager。
+  - SSH：配好 SSH 密钥，`remote` 用 `git@github.com:<你的用户名>/xiaozhi-tpa.git`。
+- **GitHub 侧**：先手动建一个 **Public** 仓库（例如 `xiaozhi-tpa`），不需要推任何文件，空仓库即可。
+
+### 每次更新流程
+1. 我改完代码 → 本地 `git add -A && git commit`（在沙箱内完成，无需网络）。
+2. 你运行 `push.bat` → 推到 GitHub。
+3. GitHub Actions 自动构建 5 个工程，跑完在 **Actions** 页 Artifacts 下载 5 个 jar；若推 `v*` tag，会额外出一个 **Release** 挂上这些 jar。
+4. 拿到 jar 后按 `release-metadata/` 模板去各平台发布。
+
+### 我需要你提供的
+- GitHub 仓库地址（填进 `remote.txt`）。
+- 确认你在要运行 `push.bat` 的机器上**能联网到 GitHub** 且**已认证**（令牌/SSH）。
+- （可选）希望 `push.bat` 推 `v*` tag 自动打 Release：我按 `CI.md` 的说明执行 `git tag v1.0.0 && git push origin v1.0.0`。
+
+### 触发与产物
+- 推 `main`/`master` 或手动 Run workflow → 构建并上传 Artifacts。
+- 推 `v*` tag → 额外创建 GitHub Release，5 个 jar 作为附件。
+- 文件名规则：`xiaozhi_tpa-<mod_version>-<loader>-<mc>.jar`（如 `xiaozhi_tpa-1.0.0-neoforge-1.21.1.jar`）。
+
