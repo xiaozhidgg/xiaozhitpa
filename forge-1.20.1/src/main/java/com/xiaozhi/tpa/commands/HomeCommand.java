@@ -8,7 +8,7 @@ import com.xiaozhi.tpa.util.HomePos;
 import com.xiaozhi.tpa.util.SaveBackPosition;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.commands.arguments.StringArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
