@@ -58,6 +58,7 @@ xiaozhi-tpa/
 - **`/back` 位置记录时机**：死亡时、以及被 `/tpa` 传送前、`/home` 传送前。
 - **持久化两套**：Forge/NeoForge 存世界存档（`SavedData`）；Fabric 存 `世界目录/xiaozhi_tpa_player_data.json`（Gson）。行为等价，但文件位置不同。
 - **服务端专用**：客户端无任何注册项，`displayTest = "IGNORE_SERVER_VERSION"`（Forge/NeoForge）、Fabric `environment: "server"`。
+- **⭐ 提示消息必须是「纯文本 literal」**（最关键）：因为客户端不装本 mod，**没有语言文件**，所以发给玩家的消息**不能**用 `Component.translatable("key", …)` / `Text.translatable(...)` —— 客户端解析不了这个 key，会直接显示原始键（如 `command.home.teleported`）。必须用 `Component.literal("§a已返回家【" + name + "】")` / `Text.literal(...)` 把**已成形的文本**直接发给客户端。因此文案是**固定中文内置在代码里**的（不随客户端语言变）。语言文件 `assets/xiaozhi_tpa/lang/*.json` 已保留但**不再被引用**。
 
 ---
 
@@ -158,12 +159,19 @@ gradlew.bat build       rem 产物在 build/libs/
 
 > 若你**本机无法联网**或不想折腾 JDK/Gradle，推荐用仓库自带的 **GitHub Actions**（见根目录 [`CI.md`](CI.md)）：推送到 GitHub 即云端编译全部 5 个工程并产出 jar，作为 Release/Artifact 下载。
 
+### 本机构建用到的环境（本 session 实测可用）
+- **Gradle 8.10.2**（GitHub Actions 也用这个版本）：ForgeGradle 6 / Loom / NeoForge ModDevGradle 都兼容；**不要用 Gradle 9+**（ForgeGradle 6 与 Loom 1.6 在 Gradle 9 下会报 `not supported` / `LoomGradleExtensionImpl` 失败）。
+- **JDK**：forge-1.20.1 需 **17**（本机另装了 Temurin 17）；其余用 **21**。Fabric 1.20.1 用 JDK21 也能编（`options.release = 17`）。
+- **联网**：若走代理，构建前设置 `JAVA_TOOL_OPTIONS="-Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=端口 -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=端口"`（GitHub 执行环境不需要）。
+- 首次构建会联网下载 Forge/NeoForge/Fabric + Minecraft，较慢属正常；之后有缓存就快。
+- 查真实编译错误最稳的办法是**本机 `gradle compileJava`**（或 `--info`），比等 CI 截图准。
+
 ### Java 版本要求
 | 工程 | JDK |
 |---|---|
 | forge-1.20.1 | 17 |
 | forge-1.21.1 / neoforge-1.21.1 / fabric-1.21.1 | 21 |
-| fabric-1.20.1 | 17 |
+| fabric-1.20.1 | 17（用 21 也能编） |
 
 ---
 
@@ -183,9 +191,16 @@ gradlew.bat build       rem 产物在 build/libs/
 
 - 把 Mojang 名字（Forge/NeoForge）当 Yarn 名字（Fabric）用，会直接编译失败——**按第 3 节对照表来**。
 - `PlayerData.get(...)` 在 Forge 1.20.1 与 1.21.x 的 `computeIfAbsent` **签名不同**：1.20.1 是 `(loader, constructor, name)`，1.21 是 `(Factory, name)`。改版本时最容易踩。
+- **1.21.x `SavedData` API 变了**（本 session 实际踩的坑）：
+  - `save` 签名是 `save(CompoundTag, HolderLookup.Provider)`（不是旧的 `save(CompoundTag)`）。
+  - `SavedData.Factory` 是个 **record**，deserializer 是 **`BiFunction<CompoundTag, HolderLookup.Provider, T>`**，所以 `load` 也要写成 `load(CompoundTag, HolderLookup.Provider)`。
+  - **差异**：NeoForge 的 `Factory` 有 `(Supplier, BiFunction)` 两参构造；**Forge 1.21.1 只有 `(Supplier, BiFunction, DataFixTypes)` 三参构造**，要补 `DataFixTypes.LEVEL`。
+- **Yarn（Fabric）**：取维度注册表键用 `RegistryKeys.WORLD`（**没有** `Registry.WORLD_KEY`）；字符串参数用 Brigadier 的 `com.mojang.brigadier.arguments.StringArgumentType`（Yarn 没有 Mojang 那种 `StringArgumentType` 包装类）。取字符串用 `ctx.getArgument("name", String.class)`（Brigadier 原生方法）。
+- **Forge 1.21.x 不需要 `reobfJar`**：1.21 用官方 Mojang 映射，`build.gradle` 里 `jar` 的 `finalizedBy 'reobfJar'` 会导致 `Task 'reobfJar' not found` 而失败，**必须删掉**（Forge 1.20.1 仍需要）。
 - 跨维传送：必须传**目标维度**的 World/ServerLevel，而不是当前世界。`/home`、`/back`、自动接受 `/tpa` 都要按维度取目标世界。
-- Forge 需要在 jar task 里 `finalizedBy 'reobfJar'`，否则服务器端会因映射问题崩溃。
+- **命令反馈不要广播给 OP**：`source.sendSuccess(supplier, broadcastToOps)` 第二参改 `false`（玩家本人仍能看到，OP 不会看到别人的指令反馈）；发给特定玩家的用 `player.sendSystemMessage(...)`（Mojang）/ `player.sendMessage(text, false)`（Yarn）。服务器后台日志是 Minecraft 自带记录，不受影响。
 - `gradle-wrapper.jar` 是二进制，仓库里无法保留；请用 `gradle wrapper` 或本机 Gradle。
+- **1.20.1 老 API**：`ResourceLocation.fromNamespaceAndPath(...)` 在 1.20.1 **不存在**（那是 1.20.2+），用 `new ResourceLocation("minecraft","overworld")` 或 `ResourceLocation.tryParse("minecraft:overworld")` 兜底。
 
 ---
 
