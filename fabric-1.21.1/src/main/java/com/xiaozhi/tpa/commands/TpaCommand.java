@@ -30,12 +30,12 @@ public final class TpaCommand {
         }
 
         if (self.getUuid().equals(target.getUuid())) {
-            source.sendError(Text.translatable("command.tpa.self"));
+            source.sendError(Text.literal("§c不能向自己发送传送请求！"));
             return 0;
         }
 
         if (TpaManager.hasOutgoing(self.getUuid())) {
-            source.sendError(Text.translatable("command.tpa.request_exists"));
+            source.sendError(Text.literal("§c你已有一个待处理的传送请求。"));
             return 0;
         }
 
@@ -43,19 +43,19 @@ public final class TpaCommand {
             SaveBackPosition.save(self);
             self.teleport(target.getServerWorld(), target.getX(), target.getY(), target.getZ(),
                     target.getYaw(), target.getPitch());
-            self.sendMessage(Text.translatable("command.tpa.auto_accepted", target.getDisplayName()), false);
-            target.sendMessage(Text.translatable("command.tpa.auto_accepted_by", self.getDisplayName()), false);
+            self.sendMessage(Text.literal("§a已tpa至 " + target.getDisplayName().getString() + " 处。"), false);
+            target.sendMessage(Text.literal("§a" + self.getDisplayName().getString() + " 已自动传送到你这里。"), false);
             return 1;
         }
 
         if (TpaManager.hasIncoming(target.getUuid())) {
-            source.sendError(Text.translatable("command.tpa.target_has_request", target.getDisplayName()));
+            source.sendError(Text.literal("§c" + target.getDisplayName().getString() + " 已有待处理的传送请求。"));
             return 0;
         }
 
         TpaManager.sendRequest(self.getUuid(), target.getUuid());
-        source.sendFeedback(() -> Text.translatable("command.tpa.sent", target.getDisplayName()), false);
-        target.sendMessage(Text.translatable("command.tpa.received", self.getDisplayName()), false);
+        source.sendFeedback(() -> Text.literal("§a已向 " + target.getDisplayName().getString() + " 发送传送请求。"), false);
+        target.sendMessage(Text.literal("§b" + self.getDisplayName().getString() + " 想传送到你这里，输入 /tpaccept 接受或 /tpdeny 拒绝。"), false);
         return 1;
     }
 }

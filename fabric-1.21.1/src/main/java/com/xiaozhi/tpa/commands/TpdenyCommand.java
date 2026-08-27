@@ -30,19 +30,19 @@ public final class TpdenyCommand {
 
         TpaRequest req = TpaManager.getIncoming(self.getUuid());
         if (req == null) {
-            source.sendError(Text.translatable("command.tpdeny.no_request"));
+            source.sendError(Text.literal("§c没有待处理的传送请求！"));
             return 0;
         }
         if (from != null && !req.from().equals(from.getUuid())) {
-            source.sendError(Text.translatable("command.tpdeny.not_from_player", from.getDisplayName()));
+            source.sendError(Text.literal("§c你没有来自 " + from.getDisplayName().getString() + " 的传送请求。"));
             return 0;
         }
 
         ServerPlayerEntity requester = self.getServer().getPlayerManager().getPlayer(req.from());
         if (requester != null) {
-            requester.sendMessage(Text.translatable("command.tpdeny.denied", self.getDisplayName()), false);
+            requester.sendMessage(Text.literal("§c" + self.getDisplayName().getString() + " 拒绝了你的传送请求。"), false);
         }
-        self.sendMessage(Text.translatable("command.tpdeny.denied_success"), false);
+        self.sendMessage(Text.literal("§a已拒绝传送请求。"), false);
         TpaManager.removeRequest(self.getUuid());
         return 1;
     }

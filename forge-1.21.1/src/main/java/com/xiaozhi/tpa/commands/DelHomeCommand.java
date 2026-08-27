@@ -26,11 +26,11 @@ public class DelHomeCommand {
         var dim = level.dimension().location();
         PlayerData data = PlayerData.get(level);
         if (data.getHome(self.getUUID(), dim, name) == null) {
-            source.sendFailure(Component.translatable("command.delhome.not_found", name));
+            source.sendFailure(Component.literal("§c家点 " + name + " 不存在！"));
             return 0;
         }
         data.removeHome(self.getUUID(), dim, name);
-        source.sendSuccess(() -> Component.translatable("command.delhome.success", name), true);
+        source.sendSuccess(() -> Component.literal("§a家点 " + name + " 已删除。"), false);
         return 1;
     }
 }

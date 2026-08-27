@@ -25,7 +25,7 @@ public class TpautoCommand {
         PlayerData data = PlayerData.get(self.serverLevel());
         boolean isAuto = data.isAutoAcceptTpa(self.getUUID());
         data.setAutoAcceptTpa(self.getUUID(), !isAuto);
-        self.sendSystemMessage(Component.translatable(!isAuto ? "command.tpauto.enabled" : "command.tpauto.disabled"));
+        self.sendSystemMessage(Component.literal(!isAuto ? "§a已开启自动接受tpa。" : "§c已关闭自动接受tpa。"));
         return 1;
     }
 }

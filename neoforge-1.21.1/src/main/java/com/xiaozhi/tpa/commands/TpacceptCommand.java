@@ -30,17 +30,17 @@ public class TpacceptCommand {
 
         TpaRequest req = TpaManager.getIncoming(self);
         if (req == null) {
-            source.sendFailure(Component.translatable("command.tpaccept.no_request"));
+            source.sendFailure(Component.literal("§c没有待处理的传送请求！"));
             return 0;
         }
         if (target != null && !req.from().equals(target.getUUID())) {
-            source.sendFailure(Component.translatable("command.tpaccept.not_from_player", target.getDisplayName()));
+            source.sendFailure(Component.literal("§c你没有来自 " + target.getDisplayName().getString() + " 的传送请求。"));
             return 0;
         }
 
         ServerPlayer sender = self.getServer().getPlayerList().getPlayer(req.from());
         if (sender == null) {
-            source.sendFailure(Component.translatable("command.tpaccept.sender_offline"));
+            source.sendFailure(Component.literal("§c请求者已离线。"));
             TpaManager.removeRequest(self);
             return 0;
         }
@@ -48,8 +48,8 @@ public class TpacceptCommand {
         SaveBackPosition.save(sender);
         sender.teleportTo(self.serverLevel(), self.getX(), self.getY(), self.getZ(),
                 self.getYRot(), self.getXRot());
-        sender.sendSystemMessage(Component.translatable("command.tpaccept.accepted_to", self.getDisplayName()));
-        self.sendSystemMessage(Component.translatable("command.tpaccept.accepted_from", sender.getDisplayName()));
+        sender.sendSystemMessage(Component.literal("§a已tpa至 " + self.getDisplayName().getString() + " 处。"));
+        self.sendSystemMessage(Component.literal("§a已同意 " + sender.getDisplayName().getString() + " 的传送。"));
         TpaManager.removeRequest(self);
         return 1;
     }

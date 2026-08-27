@@ -29,10 +29,10 @@ public final class ListHomeCommand {
         Collection<String> names = PlayerData.get().getEntry(self.getUuid()).homes
                 .getOrDefault(dim, Collections.emptyMap()).keySet();
         if (names.isEmpty()) {
-            source.sendFeedback(() -> Text.translatable("command.listhome.none"), true);
+            source.sendFeedback(() -> Text.literal("§c你没有在这个维度设置家。"), false);
             return 0;
         }
-        self.sendMessage(Text.translatable("command.listhome.header"), false);
+        self.sendMessage(Text.literal("§a你在当前维度的家："), false);
         for (String name : names) {
             self.sendMessage(Text.literal("  - " + name), false);
         }

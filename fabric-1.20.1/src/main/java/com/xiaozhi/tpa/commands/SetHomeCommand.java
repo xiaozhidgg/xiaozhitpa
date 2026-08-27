@@ -36,7 +36,7 @@ public final class SetHomeCommand {
         PlayerData.get().getEntry(self.getUuid()).homes
                 .computeIfAbsent(dim, k -> new HashMap<>()).put(name, pos);
         PlayerData.get().saveLater();
-        source.sendFeedback(() -> Text.translatable("command.sethome.success", name), true);
+        source.sendFeedback(() -> Text.literal("§a已设置家【" + name + "】。"), false);
         return 1;
     }
 }

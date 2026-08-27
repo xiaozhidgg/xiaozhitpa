@@ -28,19 +28,19 @@ public final class BackCommand {
         }
         HomePos back = PlayerData.get().getEntry(self.getUuid()).back;
         if (back == null) {
-            source.sendError(Text.translatable("command.back.no_position"));
+            source.sendError(Text.literal("§c没有可返回的位置！"));
             return 0;
         }
 
         RegistryKey<World> dimKey = RegistryKey.of(RegistryKeys.WORLD, back.identifier());
         ServerWorld targetWorld = self.getServer().getWorld(dimKey);
         if (targetWorld == null) {
-            source.sendError(Text.translatable("command.home.invalid_dimension"));
+            source.sendError(Text.literal("§c家所在的维度不可用！"));
             return 0;
         }
 
         self.teleport(targetWorld, back.x, back.y, back.z, back.yaw, back.pitch);
-        source.sendFeedback(() -> Text.translatable("command.back.teleported"), true);
+        source.sendFeedback(() -> Text.literal("§a已返回上一个位置！"), false);
         return 1;
     }
 }

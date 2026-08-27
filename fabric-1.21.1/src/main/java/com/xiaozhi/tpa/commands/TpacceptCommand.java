@@ -32,17 +32,17 @@ public final class TpacceptCommand {
 
         TpaRequest req = TpaManager.getIncoming(self.getUuid());
         if (req == null) {
-            source.sendError(Text.translatable("command.tpaccept.no_request"));
+            source.sendError(Text.literal("§c没有待处理的传送请求！"));
             return 0;
         }
         if (target != null && !req.from().equals(target.getUuid())) {
-            source.sendError(Text.translatable("command.tpaccept.not_from_player", target.getDisplayName()));
+            source.sendError(Text.literal("§c你没有来自 " + target.getDisplayName().getString() + " 的传送请求。"));
             return 0;
         }
 
         ServerPlayerEntity sender = self.getServer().getPlayerManager().getPlayer(req.from());
         if (sender == null) {
-            source.sendError(Text.translatable("command.tpaccept.sender_offline"));
+            source.sendError(Text.literal("§c请求者已离线。"));
             TpaManager.removeRequest(self.getUuid());
             return 0;
         }
@@ -50,8 +50,8 @@ public final class TpacceptCommand {
         SaveBackPosition.save(sender);
         sender.teleport(self.getServerWorld(), self.getX(), self.getY(), self.getZ(),
                 self.getYaw(), self.getPitch());
-        sender.sendMessage(Text.translatable("command.tpaccept.accepted_to", self.getDisplayName()), false);
-        self.sendMessage(Text.translatable("command.tpaccept.accepted_from", sender.getDisplayName()), false);
+        sender.sendMessage(Text.literal("§a已tpa至 " + self.getDisplayName().getString() + " 处。"), false);
+        self.sendMessage(Text.literal("§a已同意 " + sender.getDisplayName().getString() + " 的传送。"), false);
         TpaManager.removeRequest(self.getUuid());
         return 1;
     }

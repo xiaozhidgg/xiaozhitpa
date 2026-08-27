@@ -49,20 +49,19 @@ public class HomeCommand {
 
         HomePos home = PlayerData.get(level).getHome(self.getUUID(), dim, name);
         if (home == null) {
-            source.sendFailure(Component.translatable(
-                    DEFAULT_NAME.equals(name) ? "command.home.no_default" : "command.home.not_found", name));
+            source.sendFailure(Component.literal(DEFAULT_NAME.equals(name) ? "§c你还没有设置默认家。请先使用 /sethome。" : "§c未找到家点 " + name + "。"));
             return 0;
         }
 
         ServerLevel targetLevel = self.getServer().getLevel(ResourceKey.create(Registries.DIMENSION, home.dimension));
         if (targetLevel == null) {
-            source.sendFailure(Component.translatable("command.home.invalid_dimension"));
+            source.sendFailure(Component.literal("§c家所在的维度不可用！"));
             return 0;
         }
 
         SaveBackPosition.save(self);
         self.teleportTo(targetLevel, home.x, home.y, home.z, home.yaw, home.pitch);
-        source.sendSuccess(() -> Component.translatable("command.home.teleported", name), true);
+        source.sendSuccess(() -> Component.literal("§a已返回家【" + name + "】。"), false);
         return 1;
     }
 }

@@ -31,7 +31,7 @@ public final class DelHomeCommand {
         PlayerData.Entry entry = PlayerData.get().getEntry(self.getUuid());
         var dims = entry.homes.get(dim);
         if (dims == null || !dims.containsKey(name)) {
-            source.sendError(Text.translatable("command.delhome.not_found", name));
+            source.sendError(Text.literal("§c家点 " + name + " 不存在！"));
             return 0;
         }
         dims.remove(name);
@@ -39,7 +39,7 @@ public final class DelHomeCommand {
             entry.homes.remove(dim);
         }
         PlayerData.get().saveLater();
-        source.sendFeedback(() -> Text.translatable("command.delhome.success", name), true);
+        source.sendFeedback(() -> Text.literal("§a家点 " + name + " 已删除。"), false);
         return 1;
     }
 }

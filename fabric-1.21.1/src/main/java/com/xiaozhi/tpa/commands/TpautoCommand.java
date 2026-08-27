@@ -26,7 +26,7 @@ public final class TpautoCommand {
         boolean isAuto = entry.autoAccept;
         entry.autoAccept = !isAuto;
         PlayerData.get().saveLater();
-        self.sendMessage(Text.translatable(!isAuto ? "command.tpauto.enabled" : "command.tpauto.disabled"), false);
+        self.sendMessage(Text.literal(!isAuto ? "§a已开启自动接受tpa。" : "§c已关闭自动接受tpa。"), false);
         return 1;
     }
 }

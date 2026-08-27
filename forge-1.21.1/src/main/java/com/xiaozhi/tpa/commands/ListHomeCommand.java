@@ -25,10 +25,10 @@ public class ListHomeCommand {
         var dim = level.dimension().location();
         Map<String, HomePos> homes = PlayerData.get(level).getHomes(self.getUUID(), dim);
         if (homes.isEmpty()) {
-            source.sendSuccess(() -> Component.translatable("command.listhome.none"), true);
+            source.sendSuccess(() -> Component.literal("§c你没有在这个维度设置家。"), false);
             return 0;
         }
-        self.sendSystemMessage(Component.translatable("command.listhome.header"));
+        self.sendSystemMessage(Component.literal("§a你在当前维度的家："));
         for (String name : homes.keySet()) {
             self.sendSystemMessage(Component.literal("  - " + name));
         }

@@ -24,18 +24,18 @@ public class BackCommand {
         ServerPlayer self = source.getPlayerOrException();
         HomePos back = PlayerData.get(self.serverLevel()).getBackPosition(self.getUUID());
         if (back == null) {
-            source.sendFailure(Component.translatable("command.back.no_position"));
+            source.sendFailure(Component.literal("§c没有可返回的位置！"));
             return 0;
         }
 
         ServerLevel targetLevel = self.getServer().getLevel(ResourceKey.create(Registries.DIMENSION, back.dimension));
         if (targetLevel == null) {
-            source.sendFailure(Component.translatable("command.home.invalid_dimension"));
+            source.sendFailure(Component.literal("§c家所在的维度不可用！"));
             return 0;
         }
 
         self.teleportTo(targetLevel, back.x, back.y, back.z, back.yaw, back.pitch);
-        source.sendSuccess(() -> Component.translatable("command.back.teleported"), true);
+        source.sendSuccess(() -> Component.literal("§a已返回上一个位置！"), false);
         return 1;
     }
 }

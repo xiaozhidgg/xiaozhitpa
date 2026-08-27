@@ -55,21 +55,20 @@ public final class HomeCommand {
         HomePos home = PlayerData.get().getEntry(self.getUuid()).homes
                 .getOrDefault(dim, Collections.emptyMap()).get(name);
         if (home == null) {
-            source.sendError(Text.translatable(
-                    DEFAULT_NAME.equals(name) ? "command.home.no_default" : "command.home.not_found", name));
+            source.sendError(Text.literal(DEFAULT_NAME.equals(name) ? "§c你还没有设置默认家。请先使用 /sethome。" : "§c未找到家点 " + name + "。"));
             return 0;
         }
 
         RegistryKey<World> dimKey = RegistryKey.of(RegistryKeys.WORLD, home.identifier());
         ServerWorld targetWorld = self.getServer().getWorld(dimKey);
         if (targetWorld == null) {
-            source.sendError(Text.translatable("command.home.invalid_dimension"));
+            source.sendError(Text.literal("§c家所在的维度不可用！"));
             return 0;
         }
 
         SaveBackPosition.save(self);
         self.teleport(targetWorld, home.x, home.y, home.z, home.yaw, home.pitch);
-        source.sendFeedback(() -> Text.translatable("command.home.teleported", name), true);
+        source.sendFeedback(() -> Text.literal("§a已返回家【" + name + "】。"), false);
         return 1;
     }
 }

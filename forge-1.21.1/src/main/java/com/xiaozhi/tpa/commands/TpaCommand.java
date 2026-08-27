@@ -26,12 +26,12 @@ public class TpaCommand {
         ServerPlayer self = source.getPlayerOrException();
 
         if (self.getUUID().equals(target.getUUID())) {
-            source.sendFailure(Component.translatable("command.tpa.self"));
+            source.sendFailure(Component.literal("§c不能向自己发送传送请求！"));
             return 0;
         }
 
         if (TpaManager.hasOutgoing(self)) {
-            source.sendFailure(Component.translatable("command.tpa.request_exists"));
+            source.sendFailure(Component.literal("§c你已有一个待处理的传送请求。"));
             return 0;
         }
 
@@ -40,19 +40,19 @@ public class TpaCommand {
             SaveBackPosition.save(self);
             self.teleportTo(target.serverLevel(), target.getX(), target.getY(), target.getZ(),
                     target.getYRot(), target.getXRot());
-            self.sendSystemMessage(Component.translatable("command.tpa.auto_accepted", target.getDisplayName()));
-            target.sendSystemMessage(Component.translatable("command.tpa.auto_accepted_by", self.getDisplayName()));
+            self.sendSystemMessage(Component.literal("§a已tpa至 " + target.getDisplayName().getString() + " 处。"));
+            target.sendSystemMessage(Component.literal("§a" + self.getDisplayName().getString() + " 已自动传送到你这里。"));
             return 1;
         }
 
         if (TpaManager.hasIncoming(target)) {
-            source.sendFailure(Component.translatable("command.tpa.target_has_request", target.getDisplayName()));
+            source.sendFailure(Component.literal("§c" + target.getDisplayName().getString() + " 已有待处理的传送请求。"));
             return 0;
         }
 
         TpaManager.sendRequest(self, target);
-        source.sendSuccess(() -> Component.translatable("command.tpa.sent", target.getDisplayName()), false);
-        target.sendSystemMessage(Component.translatable("command.tpa.received", self.getDisplayName()));
+        source.sendSuccess(() -> Component.literal("§a已向 " + target.getDisplayName().getString() + " 发送传送请求。"), false);
+        target.sendSystemMessage(Component.literal("§b" + self.getDisplayName().getString() + " 想传送到你这里，输入 /tpaccept 接受或 /tpdeny 拒绝。"));
         return 1;
     }
 }
