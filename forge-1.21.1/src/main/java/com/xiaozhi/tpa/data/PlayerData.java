@@ -13,7 +13,9 @@ import net.minecraft.world.level.saveddata.SavedData;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -134,6 +136,66 @@ public class PlayerData extends SavedData {
             return null;
         }
         return names.get(name);
+    }
+
+    /** Look up a home by name across ALL dimensions (so /home works cross-dimension). */
+    public HomePos getHomeAnywhere(UUID uuid, String name) {
+        Map<ResourceLocation, Map<String, HomePos>> dims = homes.get(uuid);
+        if (dims == null) {
+            return null;
+        }
+        for (Map<String, HomePos> names_ : dims.values()) {
+            HomePos pos = names_.get(name);
+            if (pos != null) {
+                return pos;
+            }
+        }
+        return null;
+    }
+
+    /** All home names across every dimension (for /home suggestions and /listhome). */
+    public Collection<String> getAllHomeNames(UUID uuid) {
+        Map<ResourceLocation, Map<String, HomePos>> dims = homes.get(uuid);
+        if (dims == null) {
+            return Collections.emptyList();
+        }
+        Set<String> names = new HashSet<>();
+        for (Map<String, HomePos> list : dims.values()) {
+            names.addAll(list.keySet());
+        }
+        return names;
+    }
+
+    /** All homes grouped by dimension (for /listhome). */
+    public Map<ResourceLocation, Map<String, HomePos>> getAllHomes(UUID uuid) {
+        Map<ResourceLocation, Map<String, HomePos>> dims = homes.get(uuid);
+        if (dims == null) {
+            return Collections.emptyMap();
+        }
+        return dims;
+    }
+
+    /** Remove a named home from every dimension; returns true if it existed anywhere. */
+    public boolean removeHomeAnywhere(UUID uuid, String name) {
+        Map<ResourceLocation, Map<String, HomePos>> dims = homes.get(uuid);
+        if (dims == null) {
+            return false;
+        }
+        boolean removed = false;
+        java.util.Iterator<Map.Entry<ResourceLocation, Map<String, HomePos>>> it = dims.entrySet().iterator();
+        while (it.hasNext()) {
+            Map<String, HomePos> names_ = it.next().getValue();
+            if (names_.remove(name) != null) {
+                removed = true;
+                if (names_.isEmpty()) {
+                    it.remove();
+                }
+            }
+        }
+        if (removed) {
+            setDirty();
+        }
+        return removed;
     }
 
     public void removeHome(UUID uuid, ResourceLocation dim, String name) {

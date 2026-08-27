@@ -23,13 +23,11 @@ public class DelHomeCommand {
     private static int execute(CommandSourceStack source, String name) throws CommandSyntaxException {
         ServerPlayer self = source.getPlayerOrException();
         ServerLevel level = self.serverLevel();
-        var dim = level.dimension().location();
         PlayerData data = PlayerData.get(level);
-        if (data.getHome(self.getUUID(), dim, name) == null) {
+        if (!data.removeHomeAnywhere(self.getUUID(), name)) {
             source.sendFailure(Component.literal("§c家点 " + name + " 不存在！"));
             return 0;
         }
-        data.removeHome(self.getUUID(), dim, name);
         source.sendSuccess(() -> Component.literal("§a家点 " + name + " 已删除。"), false);
         return 1;
     }

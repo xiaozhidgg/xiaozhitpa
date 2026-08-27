@@ -29,8 +29,7 @@ public class HomeCommand {
     private static final SuggestionProvider<CommandSourceStack> HOME_SUGGESTIONS = (context, builder) -> {
         ServerPlayer self = context.getSource().getPlayerOrException();
         ServerLevel level = self.serverLevel();
-        ResourceLocation dim = level.dimension().location();
-        Collection<String> names = PlayerData.get(level).getHomeNames(self.getUUID(), dim);
+        Collection<String> names = PlayerData.get(level).getAllHomeNames(self.getUUID());
         return SharedSuggestionProvider.suggest(names, builder);
     };
 
@@ -45,9 +44,8 @@ public class HomeCommand {
     private static int teleport(CommandSourceStack source, String name) throws CommandSyntaxException {
         ServerPlayer self = source.getPlayerOrException();
         ServerLevel level = self.serverLevel();
-        ResourceLocation dim = level.dimension().location();
 
-        HomePos home = PlayerData.get(level).getHome(self.getUUID(), dim, name);
+        HomePos home = PlayerData.get(level).getHomeAnywhere(self.getUUID(), name);
         if (home == null) {
             source.sendFailure(Component.literal(DEFAULT_NAME.equals(name) ? "§c你还没有设置默认家。请先使用 /sethome。" : "§c未找到家点 " + name + "。"));
             return 0;

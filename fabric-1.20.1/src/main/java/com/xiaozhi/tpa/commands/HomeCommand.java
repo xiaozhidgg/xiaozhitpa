@@ -32,9 +32,7 @@ public final class HomeCommand {
         if (self == null) {
             return builder.buildFuture();
         }
-        String dim = self.getServerWorld().getRegistryKey().getValue().toString();
-        Collection<String> names = PlayerData.get().getEntry(self.getUuid()).homes
-                .getOrDefault(dim, Collections.emptyMap()).keySet();
+        Collection<String> names = PlayerData.get().getAllHomeNames(self.getUuid());
         return CommandSource.suggestMatching(names, builder);
     };
 
@@ -51,9 +49,7 @@ public final class HomeCommand {
         if (self == null) {
             return 0;
         }
-        String dim = self.getServerWorld().getRegistryKey().getValue().toString();
-        HomePos home = PlayerData.get().getEntry(self.getUuid()).homes
-                .getOrDefault(dim, Collections.emptyMap()).get(name);
+        HomePos home = PlayerData.get().getHomeAnywhere(self.getUuid(), name);
         if (home == null) {
             source.sendError(Text.literal(DEFAULT_NAME.equals(name) ? "§c你还没有设置默认家。请先使用 /sethome。" : "§c未找到家点 " + name + "。"));
             return 0;

@@ -27,18 +27,10 @@ public final class DelHomeCommand {
         if (self == null) {
             return 0;
         }
-        String dim = self.getServerWorld().getRegistryKey().getValue().toString();
-        PlayerData.Entry entry = PlayerData.get().getEntry(self.getUuid());
-        var dims = entry.homes.get(dim);
-        if (dims == null || !dims.containsKey(name)) {
+        if (!PlayerData.get().removeHomeAnywhere(self.getUuid(), name)) {
             source.sendError(Text.literal("§c家点 " + name + " 不存在！"));
             return 0;
         }
-        dims.remove(name);
-        if (dims.isEmpty()) {
-            entry.homes.remove(dim);
-        }
-        PlayerData.get().saveLater();
         source.sendFeedback(() -> Text.literal("§a家点 " + name + " 已删除。"), false);
         return 1;
     }

@@ -6,6 +6,7 @@ import com.xiaozhi.tpa.data.PlayerData;
 import com.xiaozhi.tpa.util.HomePos;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -22,15 +23,16 @@ public class ListHomeCommand {
     private static int execute(CommandSourceStack source) throws CommandSyntaxException {
         ServerPlayer self = source.getPlayerOrException();
         ServerLevel level = self.serverLevel();
-        var dim = level.dimension().location();
-        Map<String, HomePos> homes = PlayerData.get(level).getHomes(self.getUUID(), dim);
-        if (homes.isEmpty()) {
-            source.sendSuccess(() -> Component.literal("§c你没有在这个维度设置家。"), false);
+        Map<ResourceLocation, Map<String, HomePos>> all = PlayerData.get(level).getAllHomes(self.getUUID());
+        if (all.isEmpty()) {
+            source.sendSuccess(() -> Component.literal("§c你还没有设置任何家。"), false);
             return 0;
         }
-        self.sendSystemMessage(Component.literal("§a你在当前维度的家："));
-        for (String name : homes.keySet()) {
-            self.sendSystemMessage(Component.literal("  - " + name));
+        self.sendSystemMessage(Component.literal("§a你的家（跨维度）："));
+        for (Map.Entry<ResourceLocation, Map<String, HomePos>> dim : all.entrySet()) {
+            for (String name : dim.getValue().keySet()) {
+                self.sendSystemMessage(Component.literal("§f  - " + name + " ( " + dim.getKey() + " )"));
+            }
         }
         return 1;
     }
