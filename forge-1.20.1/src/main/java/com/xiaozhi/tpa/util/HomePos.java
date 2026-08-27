@@ -37,7 +37,7 @@ public class HomePos {
         if (dim == null) {
             dim = ResourceLocation.tryParse("minecraft:overworld");
             if (dim == null) {
-                dim = ResourceLocation.fromNamespaceAndPath("minecraft", "overworld");
+                dim = new ResourceLocation("minecraft", "overworld");
             }
         }
         return new HomePos(tag.getDouble("x"), tag.getDouble("y"), tag.getDouble("z"),

@@ -2,6 +2,7 @@ package com.xiaozhi.tpa.data;
 
 import com.xiaozhi.tpa.util.HomePos;
 import com.xiaozhi.tpa.util.Reference;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -44,7 +45,7 @@ public class PlayerData extends SavedData {
                 Reference.PLAYER_DATA_NAME);
     }
 
-    public static PlayerData load(CompoundTag tag) {
+    public static PlayerData load(CompoundTag tag, HolderLookup.Provider provider) {
         PlayerData data = new PlayerData();
 
         CompoundTag homesTag = tag.getCompound("homes");
@@ -83,7 +84,7 @@ public class PlayerData extends SavedData {
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag) {
+    public CompoundTag save(CompoundTag tag, HolderLookup.Provider provider) {
         CompoundTag homesTag = new CompoundTag();
         for (Map.Entry<UUID, Map<ResourceLocation, Map<String, HomePos>>> e : homes.entrySet()) {
             CompoundTag dimsTag = new CompoundTag();

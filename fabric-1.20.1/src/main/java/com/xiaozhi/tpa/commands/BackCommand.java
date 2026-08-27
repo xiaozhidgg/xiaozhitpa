@@ -3,7 +3,7 @@ package com.xiaozhi.tpa.commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.xiaozhi.tpa.data.PlayerData;
 import com.xiaozhi.tpa.util.HomePos;
-import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -32,7 +32,7 @@ public final class BackCommand {
             return 0;
         }
 
-        RegistryKey<World> dimKey = RegistryKey.of(Registry.WORLD_KEY, back.identifier());
+        RegistryKey<World> dimKey = RegistryKey.of(RegistryKeys.WORLD, back.identifier());
         ServerWorld targetWorld = self.getServer().getWorld(dimKey);
         if (targetWorld == null) {
             source.sendError(Text.translatable("command.home.invalid_dimension"));
