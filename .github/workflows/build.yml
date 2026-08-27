@@ -17,19 +17,19 @@ jobs:
         include:
           - project: forge-1.20.1
             java: "17"
-            artifact: xiaozhi_tpa-1.0.0-forge-1.20.1.jar
+            artifact: xiaozhi_tpa-forge-1.20.1.jar
           - project: forge-1.21.1
             java: "21"
-            artifact: xiaozhi_tpa-1.0.0-forge-1.21.1.jar
+            artifact: xiaozhi_tpa-forge-1.21.1.jar
           - project: neoforge-1.21.1
             java: "21"
-            artifact: xiaozhi_tpa-1.0.0-neoforge-1.21.1.jar
+            artifact: xiaozhi_tpa-neoforge-1.21.1.jar
           - project: fabric-1.20.1
             java: "17"
-            artifact: xiaozhi_tpa-1.0.0-fabric-1.20.1.jar
+            artifact: xiaozhi_tpa-fabric-1.20.1.jar
           - project: fabric-1.21.1
             java: "21"
-            artifact: xiaozhi_tpa-1.0.0-fabric-1.21.1.jar
+            artifact: xiaozhi_tpa-fabric-1.21.1.jar
 
     steps:
       - name: Checkout
@@ -85,27 +85,38 @@ jobs:
           merge-multiple: true
           path: artifacts
 
-      - name: Write release body (grouped by core)
+      - name: Rename jars with release version + write body (grouped by core)
         shell: bash
         run: |
-          cat > body.md <<'EOF'
-          # Xiaozhi TPA v${{ github.ref_name }}
+          set -e
+          VER="${GITHUB_REF_NAME#v}"
+          cd artifacts
+          for f in xiaozhi_tpa-*.jar; do
+            base="${f#xiaozhi_tpa-}"
+            mv "$f" "xiaozhi_tpa-${VER}-${base}"
+          done
+          cd ..
+          cat > body.md <<EOF
+          # Xiaozhi TPA $GITHUB_REF_NAME
 
-          服务端专用 TPA / 回家 / 返回 模组。客户端无需安装，放入对应加载器的服务端 `mods/` 即可。
+          服务端专用 TPA / 回家 / 返回 模组（Forge / NeoForge / Fabric）。客户端无需安装，放入对应加载器的服务端 \`mods/\` 即可，兼容原版客户端。
+
+          **功能**：\`/tpa\` 传送请求（60 秒超时）、\`/tpauto\` 自动接受、按维度多座命名家、\`/back\` 返回死亡或传送前位置、数据存档持久化、支持**跨维度回家**。
 
           ## 🟠 Forge
-          - `xiaozhi_tpa-1.0.0-forge-1.20.1.jar` — Minecraft 1.20.1
-          - `xiaozhi_tpa-1.0.0-forge-1.21.1.jar` — Minecraft 1.21.1
+          - \`xiaozhi_tpa-${VER}-forge-1.20.1.jar\` — Minecraft 1.20.1
+          - \`xiaozhi_tpa-${VER}-forge-1.21.1.jar\` — Minecraft 1.21.1
 
           ## ⚡ NeoForge
-          - `xiaozhi_tpa-1.0.0-neoforge-1.21.1.jar` — Minecraft 1.21.1
+          - \`xiaozhi_tpa-${VER}-neoforge-1.21.1.jar\` — Minecraft 1.21.1
 
           ## 🟢 Fabric
-          - `xiaozhi_tpa-1.0.0-fabric-1.20.1.jar` — Minecraft 1.20.1（需 Fabric API）
-          - `xiaozhi_tpa-1.0.0-fabric-1.21.1.jar` — Minecraft 1.21.1（需 Fabric API）
+          - \`xiaozhi_tpa-${VER}-fabric-1.20.1.jar\` — Minecraft 1.20.1（需 Fabric API）
+          - \`xiaozhi_tpa-${VER}-fabric-1.21.1.jar\` — Minecraft 1.21.1（需 Fabric API）
 
-          > 命令：`/tpa` `/tpaccept` `/tpdeny` `/tpauto` `/sethome` `/home` `/delhome` `/listhome` `/back`。提示为内置中文。
+          > 命令：\`/tpa\` \`/tpaccept\` \`/tpdeny\` \`/tpauto\` \`/sethome\` \`/home\` \`/delhome\` \`/listhome\` \`/back\`。提示为内置中文。
           EOF
+          ls -la artifacts
 
       - name: Create release
         uses: softprops/action-gh-release@v2

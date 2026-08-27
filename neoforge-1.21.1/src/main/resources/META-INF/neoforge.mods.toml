@@ -4,7 +4,7 @@ license = "MIT"
 
 [[mods]]
 modId = "xiaozhi_tpa"
-version = "1.0.0-neoforge"
+version = "1.0.3-neoforge"
 displayName = "Xiaozhi TPA"
 description = "A server-side TPA / home / back mod for NeoForge 1.21.1. Ported from the Forge 1.20.1 'xsytpa' mod."
 authors = "xiaozhi"

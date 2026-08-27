@@ -4,7 +4,7 @@ license = "MIT"
 
 [[mods]]
 modId = "xiaozhi_tpa"
-version = "1.0.0-forge"
+version = "1.0.3-forge"
 displayName = "Xiaozhi TPA"
 description = "A server-side TPA / home / back mod for Forge 1.20.1. Ported from the Forge 1.20.1 'xsytpa' mod."
 authors = "xiaozhi"
