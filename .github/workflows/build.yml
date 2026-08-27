@@ -85,8 +85,30 @@ jobs:
           merge-multiple: true
           path: artifacts
 
+      - name: Write release body (grouped by core)
+        shell: bash
+        run: |
+          cat > body.md <<'EOF'
+          # Xiaozhi TPA v${{ github.ref_name }}
+
+          服务端专用 TPA / 回家 / 返回 模组。客户端无需安装，放入对应加载器的服务端 `mods/` 即可。
+
+          ## 🟠 Forge
+          - `xiaozhi_tpa-1.0.0-forge-1.20.1.jar` — Minecraft 1.20.1
+          - `xiaozhi_tpa-1.0.0-forge-1.21.1.jar` — Minecraft 1.21.1
+
+          ## ⚡ NeoForge
+          - `xiaozhi_tpa-1.0.0-neoforge-1.21.1.jar` — Minecraft 1.21.1
+
+          ## 🟢 Fabric
+          - `xiaozhi_tpa-1.0.0-fabric-1.20.1.jar` — Minecraft 1.20.1（需 Fabric API）
+          - `xiaozhi_tpa-1.0.0-fabric-1.21.1.jar` — Minecraft 1.21.1（需 Fabric API）
+
+          > 命令：`/tpa` `/tpaccept` `/tpdeny` `/tpauto` `/sethome` `/home` `/delhome` `/listhome` `/back`。提示为内置中文。
+          EOF
+
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
           files: artifacts/*.jar
-          generate_release_notes: true
+          body_path: body.md
